@@ -8,23 +8,8 @@ import (
   "github.com/briancsparks/winmove/activedevelopment/verbose/vv"
 
   "github.com/gonutz/w32/v2"
-  "syscall"
 )
 
-var (
-  user32      = syscall.NewLazyDLL("user32.dll")
-  getParent   = user32.NewProc("GetParent")
-)
-
-var topLevelPopupClassNames map[string]struct{} = map[string]struct{}{
-  "X410_XAppWin" : struct{}{},
-}
-
-
-func GetParent(of w32.HWND) w32.HWND {
-  ret, _, _ := getParent.Call(uintptr(of))
-  return w32.HWND(ret)
-}
 
 
 func ToPrimary() {
@@ -73,8 +58,8 @@ func ToPrimary() {
     //vvvx.Printf("  Text: %v\n", w32.GetWindowText(hwnd))
     //vvvx.Printf("  Rect: %v\n", w32.GetWindowRect(hwnd))
 
-    owner := w32.GetWindow(hwnd, w32.GW_OWNER)
-    _= owner
+    //owner := w32.GetWindow(hwnd, w32.GW_OWNER)
+    //_= owner
     //vvvx.Printf("  owner: %v\n", owner)
     //vvvx.Printf("  desktop: %v\n", desktop)
     //if owner == desktop {
@@ -88,7 +73,11 @@ func ToPrimary() {
       className = name
     }
 
-    isPopup := false
+    //myHWND := MyHWND(hwnd)
+    //isPopup := myHWND.isPopup()
+
+    isPopup := isPopup(hwnd)
+/*    isPopup := false
     var style, styleEx uint32
     _=styleEx
 
@@ -99,8 +88,9 @@ func ToPrimary() {
       isPopup = isPopup || (style & w32.WS_POPUP) == w32.WS_POPUP
       isPopup = isPopup || (style & w32.WS_POPUPWINDOW) == w32.WS_POPUPWINDOW
     }
-
-    isAppWindow := false
+*/
+    isAppWindow := isAppWindow(hwnd)
+/*    isAppWindow := false
     _= isAppWindow
 
     parent := GetParent(hwnd)
@@ -114,7 +104,7 @@ func ToPrimary() {
         }
       }
     }
-
+*/
     debug.Printf("Window %8x: %5t  (%v)\n", hwnd, isAppWindow, w32.GetWindowText(hwnd))
     if !isAppWindow {
      vv.Printf("  class: %s\n", className)
