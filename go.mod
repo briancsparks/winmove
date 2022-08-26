@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/gonutz/w32/v2 v2.5.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
