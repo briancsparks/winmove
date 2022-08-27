@@ -24,10 +24,10 @@ func ToPrimary2() {
   workArea := minfo.RcWork
   workArea = ShrinkBy(workArea, 0.10)
 
-  // TODO: Figure out how to get the 1.25
-  //   Look at: https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows?redirectedfrom=MSDN#partial_rendering_of_a_full_screen_application
-  workArea.Right = scaleInt32(workArea.Right, 1.25)       // TODO: hard-coded
-  workArea.Bottom = scaleInt32(workArea.Bottom, 1.25)     // TODO: hard-coded
+  //// TODO: Figure out how to get the 1.25
+  ////   Look at: https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows?redirectedfrom=MSDN#partial_rendering_of_a_full_screen_application
+  //workArea.Right = scaleInt32(workArea.Right, 1.25)       // TODO: hard-coded
+  //workArea.Bottom = scaleInt32(workArea.Bottom, 1.25)     // TODO: hard-coded
 
   desktop := w32.GetDesktopWindow()
 
@@ -99,9 +99,10 @@ func ToPrimary() {
   workArea := minfo.RcWork
   workArea = ShrinkBy(workArea, 0.10)
 
-  // TODO: Figure out how to get the 1.25
-  workArea.Right = scaleInt32(workArea.Right, 1.25)       // TODO: hard-coded
-  workArea.Bottom = scaleInt32(workArea.Bottom, 1.25)     // TODO: hard-coded
+  //// TODO: Figure out how to get the 1.25
+  ////   Look at: https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows?redirectedfrom=MSDN#partial_rendering_of_a_full_screen_application
+  //workArea.Right = scaleInt32(workArea.Right, 1.25)       // TODO: hard-coded
+  //workArea.Bottom = scaleInt32(workArea.Bottom, 1.25)     // TODO: hard-coded
 
   vv.Printf("work area: %+v\n", minfo.RcWork)
 
