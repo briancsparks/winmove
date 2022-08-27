@@ -7,12 +7,12 @@ import (
   "github.com/briancsparks/winmove/activedevelopment"
 )
 
-func Printf(format string, a ...any) (n int, err error) {
+func Printf(format string, a ...any) {
   if !shouldVv() {
-    return 0, nil
+    return
   }
 
-  return fmt.Printf(format, a...)
+  fmt.Printf(format, a...)
 }
 
 func Print(a ...any) (n int, err error) {

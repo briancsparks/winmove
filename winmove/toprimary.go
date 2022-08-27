@@ -3,7 +3,6 @@ package winmove
 /* Copyright © 2022 Brian C Sparks <briancsparks@gmail.com> -- MIT (see LICENSE file) */
 
 import (
-  "fmt"
   "github.com/briancsparks/winmove/activedevelopment/debug"
   "github.com/briancsparks/winmove/activedevelopment/grumpy"
   "github.com/briancsparks/winmove/activedevelopment/verbose/vv"
@@ -24,6 +23,11 @@ func ToPrimary2() {
   minfo := GetMonitorInfo(primaryMonitor)
   workArea := minfo.RcWork
   workArea = ShrinkBy(workArea, 0.10)
+
+  // TODO: Figure out how to get the 1.25
+  //   Look at: https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows?redirectedfrom=MSDN#partial_rendering_of_a_full_screen_application
+  workArea.Right = scaleInt32(workArea.Right, 1.25)       // TODO: hard-coded
+  workArea.Bottom = scaleInt32(workArea.Bottom, 1.25)     // TODO: hard-coded
 
   desktop := w32.GetDesktopWindow()
 
@@ -95,13 +99,17 @@ func ToPrimary() {
   workArea := minfo.RcWork
   workArea = ShrinkBy(workArea, 0.10)
 
-  fmt.Printf("work area: %+v\n", minfo.RcWork)
+  // TODO: Figure out how to get the 1.25
+  workArea.Right = scaleInt32(workArea.Right, 1.25)       // TODO: hard-coded
+  workArea.Bottom = scaleInt32(workArea.Bottom, 1.25)     // TODO: hard-coded
+
+  vv.Printf("work area: %+v\n", minfo.RcWork)
 
   for i, hwnd := range onWrongMonitor {
 
     isAppWindow   := isAppWindow(hwnd)
 
-    debug.Printf("\n%02d: Window %8x: %5t  (%v)\n", i, hwnd, isAppWindow, w32.GetWindowText(hwnd))
+    vv.Printf("\n%02d: Window %8x: %5t  (%v)\n", i, hwnd, isAppWindow, w32.GetWindowText(hwnd))
     if !isAppWindow {
      vv.Printf("  class: %s\n", className(hwnd))
      vv.Printf("  popup: %t\n", isPopup(hwnd))
@@ -109,13 +117,15 @@ func ToPrimary() {
 
     // Move to primary monitor
     if isAppWindow {
-      debug.Printf("SetWindowPosW(%x, %v)\n", hwnd, workArea)
+      debug.Printf("SetWindowPosW(%x, %v)  (%v)\n", hwnd, workArea, w32.GetWindowText(hwnd))
 
-      //success := SetWindowPosW(hwnd, workArea)
-      //grumpy.Unlessf(success, "SetWindowPosW(%x, %v) fail\n", hwnd, workArea)
+      //if w32.GetWindowText(hwnd) == "npm root" {
+       success := SetWindowPosW(hwnd, workArea)
+       grumpy.Unlessf(success, "SetWindowPosW(%x, %v) fail\n", hwnd, workArea)
 
-      //// Do just one
-      //break
+       // Do just one
+       break
+      //}
     }
   }
 

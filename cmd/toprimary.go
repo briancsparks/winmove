@@ -3,7 +3,6 @@ package cmd
 /* Copyright © 2022 Brian C Sparks <briancsparks@gmail.com> -- MIT (see LICENSE file) */
 
 import (
-	"fmt"
   "github.com/briancsparks/winmove/winmove"
 
   "github.com/spf13/cobra"
@@ -20,7 +19,6 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("toprimary called")
     winmove.ToPrimary()
 	},
 }

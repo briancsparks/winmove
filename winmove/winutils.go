@@ -4,7 +4,6 @@ package winmove
 
 import (
   "github.com/briancsparks/winmove/activedevelopment/grumpy"
-  "github.com/briancsparks/winmove/activedevelopment/verbose/vvv"
   "github.com/gonutz/w32/v2"
   "image"
   "syscall"
@@ -69,31 +68,18 @@ func GetParent(of w32.HWND) w32.HWND {
   return w32.HWND(ret)
 }
 
-//func booya() {
-//  w32.GetWindowRect()
-//  w32.GetDesktopWindow()
-//  w32.GetMonitorInfo()
-//}
-
 func Monitors() []w32.HMONITOR {
 
-  //var primary w32.HMONITOR
-  //var rest, result []w32.HMONITOR
   r2 := []w32.HMONITOR{0}
   EnumDisplayMonitors(0, nil, func(hmonitor w32.HMONITOR, hdc w32.HDC, lprect *w32.RECT, lparam w32.LPARAM) bool {
     if isPrimaryMonitor(hmonitor) {
-      //primary = hmonitor
       r2[0] = hmonitor
     } else {
-      //rest = append(rest, hmonitor)
       r2 = append(r2, hmonitor)
     }
 
     return true
   }, 0)
-
-  //result = append(result, primary)
-  //result = append(result, rest...)
 
   return r2
 }
@@ -113,13 +99,14 @@ func SetWindowPos(hwnd w32.HWND, x, y, dx, dy int) bool {
     return false
   }
 
-  vvv.Printf("setting windows pos for %v (0x%x): Rect: x: %v, y: %v, dx: %v, dy: %v\n", hwnd, hwnd, x, y, dx, dy)
+  //vvvx.Printf("setting windows pos for %v (0x%x): Rect: x: %v, y: %v, dx: %v, dy: %v\n", hwnd, hwnd, x, y, dx, dy)
   return w32.SetWindowPos(hwnd, w32.HWND_TOP, x, y, dx, dy, w32.SWP_NOZORDER)
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
 func SetWindowPosW(hwnd w32.HWND, rect w32.RECT) bool {
+  //vvvx.Printf("SetWindowPosW(%x): rect: %+v\n", hwnd, rect)
   return SetWindowPos(hwnd, int(rect.Left), int(rect.Top), Width(rect), Height(rect))
 }
 
@@ -159,15 +146,13 @@ func Height32(r w32.RECT) int32 {
 }
 
 func ShrinkBy(r w32.RECT, delta float64) w32.RECT {
-  h, w := Height32(r), Width32(r)
-  dx, dy := int32(float64(h) * delta), int32(float64(w) * delta)
+  w, h := Width32(r), Height32(r)
+  dx, dy := int32(float64(w) * delta), int32(float64(h) * delta)
 
   return Shrink(r, dx, dy)
 }
 
 func Shrink(r w32.RECT, dx, dy int32) w32.RECT {
-  //h, w := Height32(r) - dx, Width32(r) - dy
-  //hOn2, wOn2 := h/2, w/2
   dxOn2, dyOn2 := dx/2, dy/2
 
   return w32.RECT{

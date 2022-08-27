@@ -16,3 +16,11 @@ func inSet(s map[string]struct{}, key string) bool {
   return present
 }
 
+func scaleInt(n int, x float64) int {
+  return int(float64(n) * 1.25)
+}
+
+func scaleInt32(n int32, x float64) int32 {
+  return int32(float64(n) * 1.25)
+}
+
