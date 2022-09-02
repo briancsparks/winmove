@@ -2,6 +2,8 @@ package activedevelopment
 
 /* Copyright © 2022 Brian C Sparks <briancsparks@gmail.com> -- MIT (see LICENSE file) */
 
+// -------------------------------------------------------------------------------------------------------------------
+
 type Config struct {
   ActiveD         bool
   ShowDebug       bool
@@ -14,6 +16,8 @@ type Config struct {
   FeatureTagsEx   map[string]interface{}
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 var theConfig *Config
 
 func init() {
@@ -21,42 +25,58 @@ func init() {
 
   theConfig.ActiveD     = true
 
-  theConfig.ShowDebug   = true
-  theConfig.Verbosity   = 1
-  theConfig.DoX         = true
-  theConfig.LogApis     = true
+  // Release
+  theConfig.ShowDebug = false
+  theConfig.Verbosity = 0
+  theConfig.DoX       = false
+  theConfig.LogApis   = false
 
   if !theConfig.ActiveD {
-    theConfig.ShowDebug = false
-    theConfig.Verbosity = 0
-    theConfig.DoX       = false
-    theConfig.LogApis   = false
+    // Debug / ActiveDevelopment
+    theConfig.ShowDebug   = true
+    theConfig.Verbosity   = 1
+    theConfig.DoX         = true
+    theConfig.LogApis     = true
   }
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func ConfigIsActiveD() bool {
   return theConfig.ActiveD
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func ActiveD() bool {
   return ConfigIsActiveD()
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func IsProd() bool {
   return !ActiveD()
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func ConfigVerbosity() int {
   return theConfig.Verbosity
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func Verbosity() int {
   return theConfig.Verbosity
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func DoX() bool {
   return theConfig.DoX
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func ConfigIf(n int) bool {
   if n == 0 {
@@ -65,10 +85,14 @@ func ConfigIf(n int) bool {
   return true
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func FeatureFlag(flag string) bool {
   _, present := theConfig.FeatureTags[flag]
   return present
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func OnFeatureFlag(flag string, fn func() error) error {
   if FeatureFlag(flag) {

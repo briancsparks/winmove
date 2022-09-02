@@ -6,18 +6,15 @@ import (
   "github.com/briancsparks/winmove/activedevelopment/grumpy"
   "github.com/gonutz/w32/v2"
   "image"
-  "syscall"
 )
+
+// -------------------------------------------------------------------------------------------------------------------
 
 var topLevelPopupClassNames map[string]struct{} = map[string]struct{}{
   "X410_XAppWin" : struct{}{},
 }
 
-
-var (
-  user32      = syscall.NewLazyDLL("user32.dll")
-  getParent   = user32.NewProc("GetParent")
-)
+// -------------------------------------------------------------------------------------------------------------------
 
 func isPopup(hwnd w32.HWND) bool {
   isPopup := false
@@ -36,6 +33,8 @@ func isPopup(hwnd w32.HWND) bool {
   return isPopup
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func isAppWindow(hwnd w32.HWND) bool {
   if GetParent(hwnd) == 0 {
     if !isPopup(hwnd) {
@@ -52,6 +51,8 @@ func isAppWindow(hwnd w32.HWND) bool {
   return false
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func className(hwnd w32.HWND) string {
   //className := ""
   name, success := w32.GetClassName(hwnd)
@@ -62,11 +63,7 @@ func className(hwnd w32.HWND) string {
   return ""
 }
 
-
-func GetParent(of w32.HWND) w32.HWND {
-  ret, _, _ := getParent.Call(uintptr(of))
-  return w32.HWND(ret)
-}
+// -------------------------------------------------------------------------------------------------------------------
 
 func Monitors() []w32.HMONITOR {
 
@@ -83,6 +80,8 @@ func Monitors() []w32.HMONITOR {
 
   return r2
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func isPrimaryMonitor(hmonitor w32.HMONITOR) bool {
   var lmpi w32.MONITORINFO
@@ -133,17 +132,25 @@ func Width(r w32.RECT) int {
   return int(r.Right - r.Left)
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func Height(r w32.RECT) int {
   return int(r.Bottom - r.Top)
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func Width32(r w32.RECT) int32 {
   return r.Right - r.Left
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func Height32(r w32.RECT) int32 {
   return r.Bottom - r.Top
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func ShrinkBy(r w32.RECT, delta float64) w32.RECT {
   w, h := Width32(r), Height32(r)
@@ -151,6 +158,8 @@ func ShrinkBy(r w32.RECT, delta float64) w32.RECT {
 
   return Shrink(r, dx, dy)
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func Shrink(r w32.RECT, dx, dy int32) w32.RECT {
   dxOn2, dyOn2 := dx/2, dy/2

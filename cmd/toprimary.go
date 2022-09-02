@@ -8,6 +8,8 @@ import (
   "github.com/spf13/cobra"
 )
 
+// -------------------------------------------------------------------------------------------------------------------
+
 // toprimaryCmd represents the toprimary command
 var toprimaryCmd = &cobra.Command{
 	Use:   "toprimary",
@@ -22,6 +24,8 @@ to quickly create a Cobra application.`,
     winmove.ToPrimary()
 	},
 }
+
+// -------------------------------------------------------------------------------------------------------------------
 
 func init() {
 	rootCmd.AddCommand(toprimaryCmd)

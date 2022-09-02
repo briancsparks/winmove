@@ -8,6 +8,16 @@ import (
   "syscall"
 )
 
+
+// -------------------------------------------------------------------------------------------------------------------
+
+var (
+  user32      = syscall.NewLazyDLL("user32.dll")
+  getParent   = user32.NewProc("GetParent")
+)
+
+// -------------------------------------------------------------------------------------------------------------------
+
 func EnumDisplayMonitors(hdc w32.HDC, clip *w32.RECT, fnEnum func(hmonitor w32.HMONITOR, hdc w32.HDC, lprect *w32.RECT, lparam w32.LPARAM) bool, dwData uintptr) bool {
   f := syscall.NewCallback(func(hmonitor w32.HMONITOR, hdc w32.HDC, lprect *w32.RECT, lparam w32.LPARAM) bool {
     if fnEnum(hmonitor, hdc, lprect, lparam) {
@@ -18,6 +28,8 @@ func EnumDisplayMonitors(hdc w32.HDC, clip *w32.RECT, fnEnum func(hmonitor w32.H
   return w32.EnumDisplayMonitors(hdc, clip, f, dwData)
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
 func GetMonitorInfo(hmonitor w32.HMONITOR) w32.MONITORINFO {
   var lmpi w32.MONITORINFO
 
@@ -27,4 +39,10 @@ func GetMonitorInfo(hmonitor w32.HMONITOR) w32.MONITORINFO {
   return lmpi
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+
+func GetParent(of w32.HWND) w32.HWND {
+  ret, _, _ := getParent.Call(uintptr(of))
+  return w32.HWND(ret)
+}
 
